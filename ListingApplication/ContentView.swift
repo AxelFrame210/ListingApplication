@@ -8,36 +8,42 @@
 import SwiftUI
 import UIKit
 
+
 struct ContentView: View {
+    let iconArray = ["🏆", "⭐️", "❤️", "♠️"]
     var body: some View {
         VStack () {
-            Text("Memorize").font(.system(size: 40, weight: .bold))
-            HStack() {
-                Text("9:30")
-                Circle().frame(width: 6, height: 6).foregroundColor(.black)
-                Text("Mar,15")
-                Circle().frame(width: 6, height: 6).foregroundColor(.black)
-            }
+            gameTitle(gameName: "Memorize", gameLogo: "🧠")
+           
             
         }.padding()
         
-        VStack{
             HStack{
-            
-                CardView(icon: "trophy.fill", name: "World", isSelected: false)
-                CardView(icon: "star.fill", name: "World", isSelected: false)
-                CardView(icon: "suit.heart.fill", name: "World", isSelected: false)
-                CardView(icon: "suit.spade.fill", name: "World", isSelected: false)
+                ForEach(iconArray.indices, id: \.self) {index in
+                    CardView(icon: iconArray[index], name: "World", isSelected: true)
+                }
+                
+                
             }.padding()
             
-        }
      
     }
 }
-
+struct gameTitle: View {
+    let gameName: String
+    let gameLogo: String
+    var body: some View {
+        HStack(alignment: .center) {
+            Text(gameLogo).font(.system(size: 40))
+            Text(gameName).font(.system(size: 40, weight: .bold))
+        }
+      
+    }
+}
 struct CardView : View {
     var icon: String
     var name: String
+    
     @State var isSelected = true
     
     var body: some View {
@@ -45,10 +51,10 @@ struct CardView : View {
         ZStack {
             let rec = RoundedRectangle(cornerRadius: 10)
             
-            if !isSelected {
+            if isSelected {
                rec.strokeBorder(lineWidth: 1)
                 VStack() {
-                    Image(systemName: "\(icon)")
+                    Text(icon)
                     Text("\(name)")
                 }
             }
