@@ -3,20 +3,22 @@
 //  ListingApplication
 //
 //  Created by Admin on 21/2/25.
-//
+//View
 
 import SwiftUI
 import UIKit
 
 
 struct ContentView: View {
+    //Pointing to an instance of the View Model
+    var gameModel: EmojiMemorizeGame
     let iconArray = ["🏆", "⭐️", "❤️", "♠️", "❤️","🏆", "⭐️", "❤️", "♠️"]
     @State var cardCount: Int = 4
         
     var body: some View {
         
         gameTitle
-
+ 
         VStack {
             
             cardList
@@ -31,7 +33,8 @@ struct ContentView: View {
     
     var cardList: some View {
         
-        HStack {
+        LazyVGrid(columns: [GridItem(.adaptive(minimum: 50)),GridItem(.adaptive(minimum: 50)) ]) {
+            
             ForEach(0..<cardCount, id: \.self) {index in
                 CardView(icon: iconArray[index], name: "World", isSelected: true)
             }
@@ -64,7 +67,9 @@ struct ContentView: View {
                 Text("Memorize").font(.system(size: 40, weight: .bold))
             })
         }
-
+    var revealCards: some View {
+        Text("Reveal Cards").font(.system(size: 30))
+    }
     // A core component should be a struct  for better readability
     struct CardView : View {
         var icon: String
@@ -72,20 +77,19 @@ struct ContentView: View {
         @State var isSelected = true
         
         var body: some View {
-
+            
             ZStack {
                 let rec = RoundedRectangle(cornerRadius: 10)
+                rec.fill(Color.white).strokeBorder(lineWidth: 1)
                 
-                if isSelected {
-                   rec.strokeBorder(lineWidth: 1)
+                Group {
                     VStack() {
                         Text(icon)
                         Text("\(name)")
                     }
                 }
-                else {
-                    rec.fill(Color.blue).strokeBorder(lineWidth: 1)
-                }
+                
+                rec.fill(Color.white).strokeBorder(lineWidth: 2).fill(Color.blue).opacity(isSelected ? 0 : 1)
             }
             .onTapGesture {
                 isSelected.toggle()
